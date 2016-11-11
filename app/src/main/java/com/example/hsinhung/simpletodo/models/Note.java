@@ -23,6 +23,15 @@ public class Note implements Parcelable{
     private int priority;
     private int status;
 
+    public Note() {
+        subject = "";
+        createTime = new Date();
+        dueTime = new Date();
+        content = "";
+        priority = 0;
+        status = 0;
+    }
+
     public Note(String subject, String content, int priority, int status, Date dueTime) {
         this.subject = subject;
         this.content = content;
@@ -34,8 +43,8 @@ public class Note implements Parcelable{
     public Note(Cursor cursor) {
         id = cursor.getInt(cursor.getColumnIndex(Tables.NoteTable.NOTE_ID));
         subject = cursor.getString(cursor.getColumnIndex(Tables.NoteTable.NOTE_SUBJECT));
-        createTime = Utility.parseStringToDate(cursor.getString(cursor.getColumnIndex(Tables.NoteTable.NOTE_CREATE_TIME)));
-        dueTime = Utility.parseStringToDate(cursor.getString(cursor.getColumnIndex(Tables.NoteTable.NOTE_DUE_DATE)));
+        createTime = Utility.parseStringToDateTime(cursor.getString(cursor.getColumnIndex(Tables.NoteTable.NOTE_CREATE_TIME)));
+        dueTime = Utility.parseStringToDateTime(cursor.getString(cursor.getColumnIndex(Tables.NoteTable.NOTE_DUE_DATE)));
         content = cursor.getString(cursor.getColumnIndex(Tables.NoteTable.NOTE_CONTENT));
         priority = cursor.getInt(cursor.getColumnIndex(Tables.NoteTable.NOTE_PRIORITY));
         status = cursor.getInt(cursor.getColumnIndex(Tables.NoteTable.NOTE_STATUS));
