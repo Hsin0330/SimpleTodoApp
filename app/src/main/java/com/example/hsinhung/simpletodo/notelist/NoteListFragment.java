@@ -1,5 +1,7 @@
 package com.example.hsinhung.simpletodo.notelist;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,20 +9,24 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.hsinhung.simpletodo.R;
 import com.example.hsinhung.simpletodo.base.BaseFragment;
 import com.example.hsinhung.simpletodo.database.Database;
 import com.example.hsinhung.simpletodo.models.Note;
 import com.example.hsinhung.simpletodo.repositories.NoteRepository;
+import com.example.hsinhung.simpletodo.utilities.Constants;
+import com.example.hsinhung.simpletodo.utilities.LocalBroadcastTool;
 
 import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.hsinhung.simpletodo.utilities.Constants.ACTION_EDIT_NOTE;
 
 /**
  * Created by SymPhoNy on 11/11/2016.
@@ -31,12 +37,39 @@ public class NoteListFragment extends BaseFragment {
     private final int REQUEST_CODE = 20;
 
     private RecyclerView listView;
-    private Button btnAdd;
-    private EditText editNewContent;
 
     private NoteListAdapter itemAdapter;
 
     private NoteRepository noteRepository;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Note note = intent.getParcelableExtra(Constants.KEY_NOTE);
+
+            switch (action) {
+                case Constants.ACTION_ADD_NEW_NOTE:
+                    noteRepository.insertNote(note);
+                    setNoteData();
+                    break;
+                case Constants.ACTION_DELETE_NOTE:
+                    noteRepository.deleteNote(note);
+                    setNoteData();
+                    break;
+                case ACTION_EDIT_NOTE:
+                    NoteEditDialog dialog = new NoteEditDialog();
+                    dialog.setArguments(intent.getExtras());
+                    dialog.show(getActivity().getSupportFragmentManager(), NoteEditDialog.class.getSimpleName());
+                    break;
+                case Constants.ACTION_UPDATE_NOTE:
+                    noteRepository.updateNote(note);
+                    setNoteData();
+                    break;
+            }
+
+        }
+    };
 
     @Nullable
     @Override
@@ -53,6 +86,24 @@ public class NoteListFragment extends BaseFragment {
         setNoteData();
 
         setupListViewListener();
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LocalBroadcastTool.register(getContext(), receiver,
+                Constants.ACTION_ADD_NEW_NOTE,
+                Constants.ACTION_DELETE_NOTE,
+                Constants.ACTION_EDIT_NOTE,
+                Constants.ACTION_UPDATE_NOTE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LocalBroadcastTool.unregister(getContext(), receiver);
     }
 
     @Override
@@ -65,33 +116,31 @@ public class NoteListFragment extends BaseFragment {
 
             itemAdapter.addItem(position, new Note("", content, 0, 0, new Date()));
             itemAdapter.notifyDataSetChanged();
-
-            writeItems();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_note_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.icon_add_note) {
+            new NoteEditDialog().show(getActivity().getSupportFragmentManager(), NoteEditDialog.class.getSimpleName());
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initViews(View rootView) {
         listView = (RecyclerView) rootView.findViewById(R.id.fragment_listview_note);
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
         listView.setItemAnimator(new DefaultItemAnimator());
-
-        btnAdd = (Button) rootView.findViewById(R.id.fragment_btn_add_note);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String itemText = editNewContent.getText().toString();
-                itemAdapter.addItem(new Note("", itemText, 0, 0, new Date()));
-                itemAdapter.notifyDataSetChanged();
-                editNewContent.setText("");
-//                writeItems();
-            }
-        });
-
-        editNewContent = (EditText) rootView.findViewById(R.id.fragment_text_new_note);
     }
 
     private void setNoteData() {
-        readItems();
         itemAdapter = new NoteListAdapter(this, noteRepository.readNoteList());
         listView.setAdapter(itemAdapter);
     }
@@ -116,28 +165,5 @@ public class NoteListFragment extends BaseFragment {
 //                startActivityForResult(intent, REQUEST_CODE);
 //            }
 //        });
-    }
-
-    private void readItems() {
-//        items = noteRepository.readNoteList();
-//        File filesDir = getContext().getFilesDir();
-//        File todoFile = new File(filesDir, "todo.txt");
-//
-//        try {
-//            items = new ArrayList<>(FileUtils.readLines(todoFile));
-//        } catch (IOException e) {
-//            items = new ArrayList<>();
-//        }
-    }
-
-    private void writeItems() {
-//        File fileDir = getContext().getFilesDir();
-//        File todoFile = new File(fileDir, "todo.txt");
-//
-//        try {
-//            FileUtils.writeLines(todoFile, items);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 }

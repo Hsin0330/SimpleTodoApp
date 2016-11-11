@@ -12,19 +12,24 @@ import java.util.Locale;
 
 public class Utility {
 
-    private static DateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.TAIWAN);
+    private static DateFormat dateTimeParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.TAIWAN);
+    private static DateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd", Locale.TAIWAN);
 
-    public static Date parseStringToDate(String dateString) {
+    public static Date parseStringToDateTime(String dateString) {
         Date date = null;
         try {
-            date = dateTime.parse(dateString);
+            date = dateTimeParser.parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return date;
     }
 
+    public static String formatDateTimeToString(Date date) {
+        return dateTimeParser.format(date);
+    }
+
     public static String formatDateToString(Date date) {
-        return dateTime.format(date);
+        return dateParser.format(date);
     }
 }

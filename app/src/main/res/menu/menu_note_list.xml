@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:todoApp="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/icon_add_note"
+          android:title="@string/note_add_hint"
+          android:icon="@android:drawable/ic_menu_add"
+          todoApp:showAsAction="always"/>
+</menu>

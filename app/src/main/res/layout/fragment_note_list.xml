@@ -3,29 +3,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/fragment_btn_add_note"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:text="Add Note"/>
-
-    <EditText
-        android:id="@+id/fragment_text_new_note"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/fragment_btn_add_note"
-        android:layout_toLeftOf="@+id/fragment_btn_add_note"
-        android:layout_toStartOf="@+id/fragment_btn_add_note"
-        android:ems="10"
-        android:hint="Enter a new item"
-        android:inputType="textPersonName"/>
-
     <com.example.hsinhung.simpletodo.base.AdaptedRecyclerView
         android:id="@+id/fragment_listview_note"
         android:layout_width="match_parent"

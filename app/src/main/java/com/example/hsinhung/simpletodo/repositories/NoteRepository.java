@@ -43,7 +43,7 @@ public class NoteRepository {
 
 //        String order = Tables.NoteTable.
 
-        Cursor cursor = db.query(Tables.NoteTable.TABLE_NAME, columns, null, null, null, null, null);
+        Cursor cursor = db.query(Tables.NoteTable.TABLE_NAME, null, null, null, null, null, null);
         while(cursor.moveToNext()) {
             noteList.add(new Note(cursor));
         }
@@ -57,7 +57,7 @@ public class NoteRepository {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(Tables.NoteTable.NOTE_SUBJECT, note.getSubject());
-        contentValues.put(Tables.NoteTable.NOTE_DUE_DATE, Utility.formatDateToString(note.getDueTime()));
+        contentValues.put(Tables.NoteTable.NOTE_DUE_DATE, Utility.formatDateTimeToString(note.getDueTime()));
         contentValues.put(Tables.NoteTable.NOTE_CONTENT, note.getContent());
         contentValues.put(Tables.NoteTable.NOTE_PRIORITY, note.getPriority());
         contentValues.put(Tables.NoteTable.NOTE_STATUS, note.getStatus());
@@ -70,7 +70,7 @@ public class NoteRepository {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(Tables.NoteTable.NOTE_SUBJECT, note.getSubject());
-        contentValues.put(Tables.NoteTable.NOTE_DUE_DATE, Utility.formatDateToString(note.getDueTime()));
+        contentValues.put(Tables.NoteTable.NOTE_DUE_DATE, Utility.formatDateTimeToString(note.getDueTime()));
         contentValues.put(Tables.NoteTable.NOTE_CONTENT, note.getContent());
         contentValues.put(Tables.NoteTable.NOTE_PRIORITY, note.getPriority());
         contentValues.put(Tables.NoteTable.NOTE_STATUS, note.getStatus());

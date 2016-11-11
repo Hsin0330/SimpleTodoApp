@@ -5,10 +5,64 @@
               android:orientation="vertical"
               android:padding="@dimen/note_item_padding">
 
-    <TextView
-        android:id="@+id/note_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="AAA"/>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/gap_2x"
+            android:background="@color/grey_100">
+
+            <TextView
+                android:id="@+id/note_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ABC"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
+
+            <TextView
+                android:id="@+id/note_due_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ABC"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:gravity="right|end"/>
+
+            <TextView
+                android:id="@+id/note_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ABC"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:layout_marginTop="@dimen/gap_1x"
+                android:layout_marginBottom="@dimen/gap_1x"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/note_priority"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ABC"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>
+
+                <TextView
+                    android:id="@+id/note_status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ABC"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
